@@ -2,7 +2,6 @@ package com.mycompany.propertymanagement.property_management.controller;
 
 import com.mycompany.propertymanagement.property_management.dto.PropertyDTO;
 import com.mycompany.propertymanagement.property_management.service.PropertyService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,8 +12,11 @@ import java.util.List;
 @RequestMapping("/api/v1")
 public class PropertyController {
 
-    @Autowired
-    private PropertyService propertyService;
+    private final PropertyService propertyService;
+
+    public PropertyController(PropertyService propertyService) {
+        this.propertyService = propertyService;
+    }
 
     @GetMapping("/hello")
     public String sayHello() {
@@ -50,9 +52,9 @@ public class PropertyController {
         return new ResponseEntity<>(propertyService.updatePropertyPrice(propertyDTO, propertyId), HttpStatus.OK);
     }
 
-    @DeleteMapping("properties/delete/{Id}")
-    public ResponseEntity<HttpStatus> deleteById(@PathVariable Long Id) {
-        propertyService.deleteProperty(Id);
+    @DeleteMapping("properties/delete/{propertyId}")
+    public ResponseEntity<HttpStatus> deleteById(@PathVariable Long propertyId) {
+        propertyService.deleteProperty(propertyId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
