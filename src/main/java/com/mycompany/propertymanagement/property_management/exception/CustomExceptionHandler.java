@@ -1,5 +1,7 @@
 package com.mycompany.propertymanagement.property_management.exception;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -12,6 +14,8 @@ import java.util.List;
 
 @ControllerAdvice
 public class CustomExceptionHandler {
+
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
     @ExceptionHandler(BusinessException.class)
     public ResponseEntity<List<ErrorModel>> handleBusinessException(BusinessException businessException) {
 
@@ -24,6 +28,7 @@ public class CustomExceptionHandler {
         List<FieldError> fieldErrors = manve.getBindingResult().getFieldErrors();
 
         for (FieldError fieldError : fieldErrors) {
+            logger.info("Inside field validatin: {} - {}", fieldError.getField(), fieldError.getDefaultMessage());
             ErrorModel errorModel = new ErrorModel();
             errorModel.setCode(fieldError.getCode());
             errorModel.setMessage(fieldError.getDefaultMessage());
