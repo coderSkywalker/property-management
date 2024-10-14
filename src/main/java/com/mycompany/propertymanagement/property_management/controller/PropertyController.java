@@ -18,7 +18,7 @@ public class PropertyController {
         this.propertyService = propertyService;
     }
 
-    @GetMapping("/hello")
+    @GetMapping(path = "/hello", consumes = "application/json", produces = "application/json")
     public String sayHello() {
         return "Hello";
     }
